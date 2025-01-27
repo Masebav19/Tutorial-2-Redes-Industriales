@@ -2,7 +2,7 @@ from flask import Flask, request,Response,json
 from Scripts.user_env import env
 from flask_cors import CORS
 from Scripts.modbus_conection import  *
-from Scripts.mysql_client import mysql_client
+#from Scripts.mysql_client import mysql_client
 
 venv = env()
 
@@ -24,7 +24,7 @@ def WriteCoil():
         NewRequ  = request.json
         try:
             state=write_simple_coil(ip= NewRequ["MbServer"],address=int(NewRequ["MbAdd"]),value=int(NewRequ["Value"]))
-            newSql = mysql_client().insert_data(data={"MbType": "Coil","MbAdd": "0000"+str(NewRequ["MbAdd"]),"MbValue":NewRequ["Value"]})
+            #newSql = mysql_client().insert_data(data={"MbType": "Coil","MbAdd": "0000"+str(NewRequ["MbAdd"]),"MbValue":NewRequ["Value"]})
             if state:
                 return Response(response=json.dumps(NewRequ),status=200)
             else:
@@ -41,7 +41,7 @@ def ReadContact():
     if request.method=="POST":
         NewRequ  = request.json
         Value=read_contacts(ip= NewRequ["MbServer"],address=int(NewRequ["MbAdd"]),Length=int(NewRequ["Length"]))
-        newSql = mysql_client()
+        #newSql = mysql_client()
         #for i in range(NewRequ["Length"]):
          #   newSql.insert_data(data={"MbType": "Contact","MbAdd": "1000"+str(int(NewRequ["MbAdd"])+i),"MbValue":int(Value[i])})
         if Value:
@@ -60,9 +60,9 @@ def WriteCoils():
         NewRequ  = request.json
         try:
             state=write_multiple_coils(ip= NewRequ["MbServer"],address=int(NewRequ["MbAdd"]),value=int(NewRequ["Values"]))
-            newSql = mysql_client()
-            for i in range(len(NewRequ["Values"])):
-                newSql.insert_data(data={"MbType": "Contact","MbAdd": "0000"+str(NewRequ["MbAdd"]+i),"MbValue":NewRequ["Values"][i]})
+            #newSql = mysql_client()
+            #for i in range(len(NewRequ["Values"])):
+            #    newSql.insert_data(data={"MbType": "Contact","MbAdd": "0000"+str(NewRequ["MbAdd"]+i),"MbValue":NewRequ["Values"][i]})
             if state:
                 return Response(response=json.dumps(NewRequ),status=200)
             else:
@@ -80,7 +80,7 @@ def ReadInput():
         NewRequ  = request.json
         try:
             Values=read_inputs(ip= NewRequ["MbServer"],address=int(NewRequ["MbAdd"]),Length=int(NewRequ["Length"]))
-            newSql = mysql_client()
+            #newSql = mysql_client()
             #for i in range(NewRequ["Length"]):
             #    newSql.insert_data(data={"MbType": "Contact","MbAdd": "3000"+str(int(NewRequ["MbAdd"])+i),"MbValue":Values[i]})
             if Values:
@@ -101,7 +101,7 @@ def WriteHolding():
         NewRequ  = request.json
         try:
             state=write_simple_holding(ip= NewRequ["MbServer"],address=int(NewRequ["MbAdd"]),value=int(NewRequ["Value"]))
-            newSql = mysql_client().insert_data(data={"MbType": "Coil","MbAdd": "4000"+str(NewRequ["MbAdd"]),"MbValue":NewRequ["Value"]})
+            #newSql = mysql_client().insert_data(data={"MbType": "Coil","MbAdd": "4000"+str(NewRequ["MbAdd"]),"MbValue":NewRequ["Value"]})
             if state:
                 return Response(response=json.dumps(NewRequ),status=200)
             else:
@@ -119,9 +119,9 @@ def WriteHoldings():
         NewRequ  = request.json
         try:
             state=write_multiple_holding(ip= NewRequ["MbServer"],address=int(NewRequ["MbAdd"]),value=int(NewRequ["Values"]))
-            newSql = mysql_client()
-            for i in range(len(NewRequ["Values"])):
-                newSql.insert_data(data={"MbType": "Contact","MbAdd": "4000"+str(NewRequ["MbAdd"]+i),"MbValue":NewRequ["Values"][i]})
+            #newSql = mysql_client()
+            #for i in range(len(NewRequ["Values"])):
+            #    newSql.insert_data(data={"MbType": "Contact","MbAdd": "4000"+str(NewRequ["MbAdd"]+i),"MbValue":NewRequ["Values"][i]})
             if state:
                 return Response(response=json.dumps(NewRequ),status=200)
             else:
